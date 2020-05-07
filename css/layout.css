@@ -1,0 +1,306 @@
+@charset "UTF-8";
+
+/* HEADER */
+header {
+    box-shadow: 0 1px 3px 1px #0001;
+    background-color: #fff;
+    position: fixed;
+    left: 0; top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+nav {
+    display: flex;
+    height: 100%;
+}
+
+nav a { 
+    color: #222;
+    font-size: 0.9em;
+    position: relative; 
+}
+
+nav .nav-item {
+    position: relative;
+    height: 100%;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav .nav-item > a {
+    padding: 0.5em 0.8em;
+    transition: color 0.3s;
+}
+
+nav .nav-item > a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: #C92039;
+    width: 100%;
+    height: 0;
+    transition: height 0.3s;
+    z-index: -1;
+}
+
+nav .nav-item:hover > a { color: #fff;}
+nav .nav-item:hover > a::before { height: 100%; }
+
+nav .sub {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: -10px;
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 3px 1px #0001;
+    transform: translateX(-50px);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
+    z-index: 10;
+}
+
+nav .sub a {
+    height: 50px;
+    line-height: 50px;
+    padding-left: 20px;
+    color: #555;
+    background-color: #fff;
+    border-left: #C92039 5px solid;
+    transition: padding-left 0.4s;
+}
+nav .sub a:hover { padding-left: 25px; background-color: #f1f1f1; }
+
+nav .nav-item:hover > .sub {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: all;
+    transition: 0.4s;
+}
+
+.auth-group a {
+    color: #555;
+    padding: 0.5em 0.8em;
+    position: relative;
+}
+
+.auth-group a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+    background-color: #C92039;
+    width: 100%;
+    height: 0;
+    transition: height 0.3s;
+}
+
+.auth-group a:hover { color: #fff; }
+.auth-group a:hover::after { height: 100%; }
+
+
+/* HEADER-MOBILE */
+.menu-icon {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    transition: 0.4s;
+}
+
+.menu-icon > span {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #333;
+    position: absolute;
+    right: 0;
+    margin-top: 20px;
+    transition: 0.4s;
+}
+.menu-icon > span:nth-child(1) { transform: translateY(10px); width: 80%; }
+.menu-icon > span:nth-child(3) { transform: translateY(-10px); width: 70%; }
+
+.mobile-nav {
+    border-top: 1px solid #eee;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.4s;
+}
+
+.mobile-nav a {
+    font-size: 0.9em;
+    color: #333;
+}
+
+.mobile-nav .nav-item {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    overflow: hidden;
+}
+
+.mobile-nav .nav-item > a {
+    padding-left: 40px;
+    display: inline-block;
+    height: 50px;
+    width: 100%;
+}
+
+.mobile-nav .nav-item:hover > a,
+.mobile-nav .sub a:hover {
+    background-color: #fafafa;
+    color: #C92039;
+}
+
+.mobile-nav .sub {
+    position: absolute;
+    left: 0;
+    top: 50px;
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-nav .sub a {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    padding-left: 60px;
+}
+
+.mobile-nav .has-sub {
+    position: relative;
+    transition: 0.3s;
+}
+
+.mobile-nav .has-sub::after {
+    content: '';
+    position: absolute;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%) rotate(135deg);
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    width: 10px;
+    height: 10px;
+}
+
+.mobile-nav .has-sub:hover {
+    height: 150px;
+}
+
+
+.mobile-nav .auth {
+    padding: 0 40px;
+    height: 50px;
+    line-height: 50px;
+}
+
+#menu-open:checked ~ header .menu-icon { transform: rotate(180deg) }
+#menu-open:checked ~ header .menu-icon span { width: 100%; }
+#menu-open:checked ~ header .menu-icon span:nth-child(1) { transform: translateY(0) rotate(45deg);}
+#menu-open:checked ~ header .menu-icon span:nth-child(2) { transform: rotate(45deg); opacity: 0;}
+#menu-open:checked ~ header .menu-icon span:nth-child(3) { transform: translateY(0) rotate(-45deg);}
+
+#menu-open:checked ~ header .mobile-nav { max-height: 400px; }
+
+
+/* /HEADER-MOBILE */
+
+/* /HEADER */
+
+
+/* VISUAL */
+.visual {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 600px;
+    margin-top: 80px;
+}
+
+.visual.sub { height: 350px; }
+
+.images::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    background-color: #0006;
+    width: 100%; height: 100%;
+}
+
+.visual img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: slide 15s infinite;
+}
+
+.visual img:nth-child(1) { animation-delay: -5s; }
+.visual img:nth-child(3) { animation-delay: -10s; }
+
+.visual.sub img { animation: none; }
+
+@keyframes slide {
+    0%       { opacity: 0; transform: translateY(-100%); }
+    20%      { opacity: 0; transform: translateY(-100%); }
+    33.333%  { opacity: 1; transform: translateY(0); }
+    53.333%  { opacity: 1; transform: translateY(0); }
+    66.666%  { opacity: 0; transform: translateY(100%); }
+    100%     { opacity: 0; transform: translateY(100%); }
+}
+
+.visual .texts {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-transform: uppercase;
+    color: #fff;
+    padding: 0 20px;
+    overflow: hidden;
+    height: 14rem;
+}
+
+.visual .text-group {
+    position: absolute;
+    left: 20px;
+    top: 0;
+    animation: slide 15s infinite;
+}
+
+.visual .text-group > div { line-height: 0.9em; }
+.visual .text-group:nth-child(1) { animation-delay: -5s; }
+.visual .text-group:nth-child(3) { animation-delay: -10s; }
+
+.visual.sub .text-group { animation: none; }
+
+@keyframes slideText {
+    0%       { opacity: 0; transform: translateY(-100%); }
+    20%      { opacity: 0; transform: translateY(-100%); }
+    33.333%  { opacity: 1; transform: translateY(0); }
+    53.333%  { opacity: 1; transform: translateY(0); }
+    66.666%  { opacity: 0; transform: translateY(100%); }
+    100%     { opacity: 0; transform: translateY(100%); }   
+}
+
+@media (max-width: 992px){
+    .visual .texts {
+        height: 15rem;
+    }
+}
