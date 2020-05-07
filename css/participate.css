@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+#video-area {
+    height: 500px;
+    background-color: #000;
+}
+
+#movie-area img {
+    pointer-events: all;
+    cursor: pointer;
+}
+
+#clip-area .line {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+    background-color: #ccc;
+}
+
+#clip-area .movie-line {
+    background-color: #555;
+}
+
+#clip-area .clip-line {
+    cursor: pointer;
+}
+
+#clip-area .clip-line.active {
+    background-color: #C92039;
+}
+
+#clip-area .clip-line .left,
+#clip-area .clip-line .right {
+    width: 10px;
+    cursor: w-resize;
+    background-color: #bbb;
+}
+
+#clip-area .clip-line.active .left,
+#clip-area .clip-line.active .right {
+    background-color: rgb(167, 20, 42);
+} 

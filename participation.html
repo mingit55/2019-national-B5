@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./css/sizing.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./fontawesome/css/all.css">
+    <link rel="stylesheet" href="./css/participate.css">
     <script src="./fontawesome/js/all.js"></script>
 </head>
 <body>
@@ -105,7 +106,7 @@
         <div class="parti">
             <div class="container padding">
                 <div class="d-flex flex-wrap">
-                    <div class="split-12">
+                    <div class="split-12 mb-5">
                         <div class="text-center">
                             <div class="fx-7 text-red" lang="en">
                                 <b>Participation</b>
@@ -125,8 +126,50 @@
                         <button class="btn my-1 bg-pale-white border border-pale-white text-black">선택 삭제</button>
                         <button class="btn my-1 bg-pale-white border border-pale-white text-black">다운로드</button>
                     </div>
-                    <div class="split-10">
-                        <div id="viewport"></div>
+                    <div class="split-10 px-4">
+                        <div id="video-area">
+                            <video></video>
+                        </div>
+                        <div id="time-area">
+                            <div class="d-flex justify-content-between hx-30 align-items-center">
+                                <div class="text-gray fx-n2">
+                                    <span class="mr-2">영상 시간: </span>
+                                    <span id="current-time">00:00:00</span>
+                                    <span>/</span>
+                                    <span id="duration-time">00:00:00</span>
+                                </div>
+                                <div class="text-gray fx-n2">
+                                    <span class="mr-1">클립 시작 시간: </span>
+                                    <span id="current-time">00:00:00</span>
+                                    <span class="mr-1 ml-2">유지 시간</span>
+                                    <span id="duration-time">00:00:00</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="clip-area">
+                            <div class="d-flex flex-column py-3">
+                                <div class="line clip-line active">
+                                    <div class="left"></div>
+                                    <div class="center"></div>
+                                    <div class="right"></div>
+                                </div>
+                                <div class="line clip-line">
+                                    <div class="left"></div>
+                                    <div class="center"></div>
+                                    <div class="right"></div>
+                                </div>
+                                <div class="line movie-line"></div>
+                            </div>
+                        </div>
+                        <div id="movie-area">
+                            <div class="d-flex w-100 justify-content-around pt-4">
+                                <img class="movie-card" src="images/movies/movie1-cover.jpg" alt="movie-cover" height="250">
+                                <img class="movie-card" src="images/movies/movie2-cover.jpg" alt="movie-cover" height="250">
+                                <img class="movie-card" src="images/movies/movie3-cover.jpg" alt="movie-cover" height="250">
+                                <img class="movie-card" src="images/movies/movie4-cover.jpg" alt="movie-cover" height="250">
+                                <img class="movie-card" src="images/movies/movie5-cover.jpg" alt="movie-cover" height="250">
+                            </div>
+                        </div>
                     </div>
                     <div class="split-1">
                         <div>
