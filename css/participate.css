@@ -24,7 +24,8 @@
 }
 
 #video-area video,
-#video-area .clip-box {
+#video-area .clip-box,
+#video-area .clip-box canvas {
     position: absolute;
     left: 0;
     top: 0;

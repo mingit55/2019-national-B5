@@ -2,6 +2,7 @@ class Viewer {
     constructor(app){
         this.app = app;
         this.currentTrack = null;
+        this.activeClip = null;
         this.trackList = [];
 
         this.$video = app.$videoArea.querySelector("video");
@@ -25,15 +26,46 @@ class Viewer {
 
                 }
                 else if(["line", "rect", "text"].includes(this.app.currentTool)) {
-                    let clip = this.app.toolList[this.app.currentTool]();
-                    this.currentTrack.clipList.push(clip);
-                    clip.mouseDown && clip.mouseDown(e);
+                    this.activeClip = this.app.toolList[this.app.currentTool]();
+                    this.currentTrack.clipList.push(this.activeClip);
+                    this.activeClip.mouseDown && this.activeClip.mouseDown(e);
+                }
+            }
+        });
+
+        window.addEventListener("mousemove", e => {
+            if(e.which === 1 && this.currentTrack && this.activeClip){
+                if(this.app.currentTool && this.app.currentTool === "pick"){
+
+                }
+                else if(["line", "rect", "text"].includes(this.app.currentTool)) {
+                    this.activeClip.mouseMove && this.activeClip.mouseMove(e);
+                }
+            }
+        });
+
+        window.addEventListener("mouseup", e => {
+            if(e.which === 1 && this.currentTrack && this.activeClip){
+                if(this.app.currentTool && this.app.currentTool === "pick"){
+
+                }
+                else if(["line", "rect", "text"].includes(this.app.currentTool)) {
+                    this.activeClip.mouseUp && this.activeClip.mouseUp(e);
                 }
             }
         });
     }
 
     render(){
+        if(this.currentTrack && this.$video.duration){
+            this.currentTrack.clipList.forEach(clip => {
+                clip.redraw();
+                if(!document.querySelector("#" + clip.$canvas.id)){
+                    this.$clipBox.append(clip.$canvas);
+                }
+            });
+        }
+
         requestAnimationFrame(() => this.render());
     }
 
@@ -56,5 +88,9 @@ class Viewer {
     
     pause(){
         this.$video.pause();
+    }
+
+    clear(){
+        this.activeClip = null;
     }
 }

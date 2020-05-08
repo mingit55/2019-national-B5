@@ -16,6 +16,18 @@ class App {
         return selected && selected.dataset.tool;
     }
 
+    get color(){
+        return document.querySelector("#s_color").value;
+    }
+
+    get lineWidth(){
+        return document.querySelector("#s_lineWidth").value;
+    }
+
+    get fontSize(){
+        return document.querySelector("#s_fontSize").value;
+    }
+
     loadDOM(){
         this.$videoArea = document.querySelector("#video-area");
         this.$timeArea = document.querySelector("#time-area");
