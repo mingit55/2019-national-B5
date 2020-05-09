@@ -2,7 +2,7 @@ class Rect extends Clip {
     constructor(){
         super(...arguments);
 
-        this.processing = true;
+        this.completed = false;
         this.temp = [0, 0];
         this.data = { x: 0, y: 0, w: 0, h: 0 };
     }
@@ -36,7 +36,7 @@ class Rect extends Clip {
     }
 
     mouseUp(){
-        this.processing = false;
+        this.completed = true;
         this.viewer.clear();
     }
 
@@ -44,7 +44,7 @@ class Rect extends Clip {
         let {x, y, w, h} = this.data;
         this.ctx.clearRect(0, 0, this.$canvas.width, this.$canvas.height);
 
-        if(this.processing) this.ctx.strokeRect(x, y, w, h);
+        if(!this.completed) this.ctx.strokeRect(x, y, w, h);
         else this.ctx.fillRect(x, y, w, h);
     }
 }
