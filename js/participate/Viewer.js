@@ -20,10 +20,10 @@ class Viewer {
             $duration.innerText = this.app.toTimeFormat(this.$video.duration);
         });
 
-        window.addEventListener("mousedown", e => {
+        this.app.$videoArea.addEventListener("mousedown", e => {
             if(e.which === 1 && this.currentTrack) {
                 if(this.app.currentTool && this.app.currentTool === "pick"){
-
+                    this.activeClip = this.currentTrack.getSelection(e);
                 }
                 else if(["line", "rect", "text"].includes(this.app.currentTool)) {
                     this.activeClip = this.app.toolList[this.app.currentTool]();

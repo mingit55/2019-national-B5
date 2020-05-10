@@ -5,6 +5,11 @@ class Line extends Clip {
         this.history = [];
     }
 
+    selectDown(x, y){
+        let colorData = this.ctx.getImageData(x, y, 1, 1).data;
+        return colorData[3] !== 0;
+    }
+
     mouseDown(e){
         let [X, Y] = this.getXY(e);
         this.history.push([X, Y]);
@@ -23,6 +28,20 @@ class Line extends Clip {
 
     redraw(){
         this.ctx.clearRect(0, 0, this.$canvas.width, this.$canvas.height);
+
+
+        if(this.active){
+            this.ctx.beginPath();
+            this.ctx.save();
+            this.ctx.strokeStyle = "#C92039";
+            this.ctx.lineWidth = this.ctx.lineWidth * 2;
+            this.history.forEach(([X, Y]) => {
+                this.ctx.lineTo(X, Y);
+            });
+            this.ctx.stroke();    
+            this.ctx.restore();
+        }
+
 
         this.ctx.beginPath();
         this.history.forEach(([X, Y]) => {
