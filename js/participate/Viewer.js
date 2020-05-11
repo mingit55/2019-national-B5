@@ -18,6 +18,7 @@ class Viewer {
         this.$video.addEventListener("loadedmetadata", e => {
             let $duration = this.app.$timeArea.querySelector("#video-duration");
             $duration.innerText = this.app.toTimeFormat(this.$video.duration);
+            this.currentTrack.duration = this.$video.duration;
         });
 
         this.app.$videoArea.addEventListener("mousedown", e => {
@@ -27,7 +28,7 @@ class Viewer {
                 }
                 else if(["line", "rect", "text"].includes(this.app.currentTool)) {
                     this.activeClip = this.app.toolList[this.app.currentTool]();
-                    this.currentTrack.clipList.push(this.activeClip);
+                    this.currentTrack.pushClip(this.activeClip);
                     this.activeClip.mouseDown && this.activeClip.mouseDown(e);
                 }
             }

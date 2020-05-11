@@ -6,7 +6,7 @@ class Track {
         this.clipList = [];
         this.pickList = [];
 
-        this.template = this.app.toHTMLFormat(`
+        this.$lineBox = this.app.toHTMLFormat(`
             <div class="d-flex flex-column py-3">
                 <div class="line movie-line"></div>
             </div>
@@ -53,7 +53,7 @@ class Track {
 
     loadClipLine(){
         this.app.$clipArea.innerHTML = "";
-        this.app.$clipArea.append(this.template);
+        this.app.$clipArea.append(this.$lineBox);
     }
 
     alldel(){
@@ -62,5 +62,10 @@ class Track {
 
     pickdel(){
         this.clipList = this.clipList.filter(clip => !clip.active);
+    }
+
+    pushClip(clip){
+        this.clipList.push(clip);
+        this.$lineBox.prepend(clip.$line);
     }
 }

@@ -1,10 +1,11 @@
 class Clip {
     constructor(app, track){
-        this.active = false;
         this.app = app;
         this.viewer = app.viewer;
         this.track = track;
         this.group = [];
+        this.startTime = 0;
+        this.duration = this.track.duration;
         this.$canvas = document.createElement("canvas");
         this.$canvas.id = "canvas" + (new Date().getTime());
         this.$canvas.width = this.app.$videoArea.offsetWidth;
@@ -19,6 +20,21 @@ class Clip {
                                                 <div class="center"></div>
                                                 <div class="right"></div>
                                             </div>`);
+        this.$line.addEventListener("click", () => this.active = ! this.active)
+    }
+
+    get active(){
+        return this.$line.classList.contains("active");
+    }
+
+    set active(value){
+        if(value){
+            this.$line.classList.add("active")
+            document.querySelector("#clip-start").innerText = this.app.toTimeFormat(this.startTime);
+            document.querySelector("#clip-duration").innerText = this.app.toTimeFormat(this.duration);
+        } else {
+            this.$line.classList.remove("active");
+        }
     }
 
     getXY(e){
