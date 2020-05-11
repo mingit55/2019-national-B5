@@ -18,7 +18,7 @@ class Viewer {
                 if(this.app.currentTool && this.app.currentTool === "pick"){
                     this.activeClip = this.currentTrack.getSelection(e);
                 }
-                else if(["line", "rect", "text"].includes(this.app.currentTool)) {
+                else if(!this.activeClip && ["line", "rect", "text"].includes(this.app.currentTool)) {
                     this.activeClip = this.app.toolList[this.app.currentTool]();
                     this.currentTrack.pushClip(this.activeClip);
                     this.activeClip.mouseDown && this.activeClip.mouseDown(e);

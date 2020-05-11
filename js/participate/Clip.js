@@ -26,7 +26,10 @@ class Clip {
                                                 </div>
                                             </div>`);
         this.$bar = this.$line.firstElementChild;
-        this.$line.addEventListener("click", () => this.active = true);
+        this.$line.addEventListener("click", () => {
+            this.track.clipList.forEach(clip => clip.active = false);
+            this.active = true;
+        });
         this.loadResizeEvent();
     }
 

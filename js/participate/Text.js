@@ -50,6 +50,8 @@ class Text extends Clip {
     mouseUp(){
         if(!this.completed) {
             this.$input.focus();
+        } else {
+            this.$input.remove();
         }
     }
 
@@ -58,6 +60,7 @@ class Text extends Clip {
         if(this.$input.value.trim() == ""){
             this.active = true;
             this.track.pickdel();
+            this.viewer.clear();
         }
         else {
             this.data.text = this.$input.value;

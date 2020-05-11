@@ -74,11 +74,25 @@ class Track {
     }
 
     alldel(){
-
+        this.clipList.forEach(clip => {
+            clip.$canvas.remove();
+            clip.$line.remove();
+        });
+        this.clipList = [];
     }
 
     pickdel(){
-        this.clipList = this.clipList.filter(clip => !clip.active);
+        let nonActives = [];
+        this.clipList.forEach(clip => {
+            if(clip.active){
+                clip.$canvas.remove();
+                clip.$line.remove();
+            } else {
+                nonActives.push(clip);
+            }
+        });
+        
+        this.clipList = nonActives;
     }
 
     pushClip(clip){
