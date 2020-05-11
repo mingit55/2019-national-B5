@@ -6,8 +6,20 @@ class Line extends Clip {
     }
 
     selectDown(x, y){
+        this.temp = [x, y];
+        
         let colorData = this.ctx.getImageData(x, y, 1, 1).data;
         return colorData[3] !== 0;
+    }
+
+    selectMove(x, y){
+        const [downX, downY] = this.temp;
+
+        let toX = ( x - downX);
+        let toY = ( y - downY);
+
+        this.$canvas.style.left = toX + "px";
+        this.$canvas.style.top = toY + "px";
     }
 
     mouseDown(e){

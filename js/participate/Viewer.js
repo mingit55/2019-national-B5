@@ -36,7 +36,7 @@ class Viewer {
         window.addEventListener("mousemove", e => {
             if(e.which === 1 && this.currentTrack && this.activeClip){
                 if(this.app.currentTool && this.app.currentTool === "pick"){
-
+                    this.currentTrack.moveSelection(e);
                 }
                 else if(["line", "rect", "text"].includes(this.app.currentTool)) {
                     this.activeClip.mouseMove && this.activeClip.mouseMove(e);
@@ -47,7 +47,7 @@ class Viewer {
         window.addEventListener("mouseup", e => {
             if(e.which === 1 && this.currentTrack && this.activeClip){
                 if(this.app.currentTool && this.app.currentTool === "pick"){
-
+                    this.clear();
                 }
                 else if(["line", "rect", "text"].includes(this.app.currentTool)) {
                     this.activeClip.mouseUp && this.activeClip.mouseUp(e);

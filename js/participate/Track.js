@@ -37,6 +37,20 @@ class Track {
         return selected;
     }
 
+    moveSelection(e){
+        const {pageX, pageY} = e;
+        const {offsetLeft, offsetTop, offsetWidth, offsetHeight} = this.app.$videoArea;
+
+        let X = pageX - offsetLeft;
+        X = X < 0 ? 0 : X > offsetWidth ? offsetWidth : X;
+        
+        let Y = pageY - offsetTop;
+        Y = Y < 0 ? 0 : Y > offsetHeight ? offsetHeight : Y;
+
+        let pickList = this.clipList.filter(clip => clip.active);
+        pickList.forEach(clip => clip.selectMove(X, Y));
+    }
+
     loadClipLine(){
         this.app.$clipArea.innerHTML = "";
         this.app.$clipArea.append(this.template);

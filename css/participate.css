@@ -10,6 +10,7 @@
     height: 500px;
     background-color: #000;
     position: relative;
+    overflow: hidden;
 }
 
 #video-area::before {
