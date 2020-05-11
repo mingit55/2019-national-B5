@@ -91,7 +91,7 @@ class App {
     }
 
     isMovieLoaded(){
-        if(!this.viewer.$video.duration){
+        if(!this.viewer.currentTrack){
             alert("먼저 영상을 선택해 주세요!");
             return false;
         }

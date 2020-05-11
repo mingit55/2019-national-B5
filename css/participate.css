@@ -36,7 +36,7 @@
 
 #time-area { width: 900px; }
 
-#clip-area { width: 900px; }
+#clip-area { width: 900px; position: relative; margin: 20px 0; }
 
 #clip-area .line {
     width: 100%;
@@ -83,6 +83,38 @@
 #clip-area .clip-line.active .right {
     background-color: rgb(167, 20, 42);
 } 
+
+#clip-area #cursor {
+    position: absolute;
+    height: 100%;
+    width: 1px;
+    background-color: #C92039;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+}
+
+#clip-area #cursor::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -2.5px;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #C92039;
+}
+
+#clip-area #cursor::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    height: 100%;
+    width: 10px;
+    transform: translateX(-50%);
+}
 
 
 #movie-area { width: 900px; }

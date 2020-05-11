@@ -5,9 +5,6 @@ class Viewer {
         this.activeClip = null;
         this.trackList = [];
 
-        this.$video = app.$videoArea.querySelector("video");
-        this.$video.volume = 0.5;
-
         this.$currentTime = app.$timeArea.querySelector("#video-current");
         this.$clipBox = app.$videoArea.querySelector(".clip-box");
 
@@ -16,12 +13,6 @@ class Viewer {
     }
     
     loadEvent(){
-        this.$video.addEventListener("loadedmetadata", e => {
-            let $duration = this.app.$timeArea.querySelector("#video-duration");
-            $duration.innerText = this.app.toTimeFormat(this.$video.duration);
-            this.currentTrack.duration = this.$video.duration;
-        });
-
         this.app.$videoArea.addEventListener("mousedown", e => {
             if(e.which === 1 && this.currentTrack) {
                 if(this.app.currentTool && this.app.currentTool === "pick"){
@@ -59,10 +50,11 @@ class Viewer {
     }
 
     render(){
-        const {currentTime, duration} = this.$video;
-        this.$currentTime.innerText = this.app.toTimeFormat(currentTime);
+        if(this.currentTrack){
+            const {currentTime} = this.currentTrack.$video;
+            this.currentTrack.setCursorPosition(currentTime);
+            this.$currentTime.innerText = this.app.toTimeFormat(currentTime);
 
-        if(this.currentTrack && duration){
             this.currentTrack.clipList.forEach(clip => {
                 if(clip.startTime <= currentTime && currentTime <= clip.startTime + clip.duration){
                     clip.redraw();
@@ -85,21 +77,23 @@ class Viewer {
     }
 
     loadTrack(track){
+        if(this.currentTrack) {
+            this.currentTrack.$video.remove();
+        }
+
         this.currentTrack = track;
         this.currentTrack.clipList = [];
         this.currentTrack.loadClipLine();
-        this.currentTrack.$lineBox.innerHTML = `<div class="line movie-line"></div>`;
-        this.$video.src = this.currentTrack.url;
-        this.$video.currentTime = 0;
-        this.$clipBox.innerHTML = "";
+        this.currentTrack.$video.currentTime = 0;
+        this.app.$videoArea.prepend(this.currentTrack.$video);
     }
 
     play(){
-        this.$video.play();
+        this.currentTrack.$video.play();
     }
     
     pause(){
-        this.$video.pause();
+        this.currentTrack.$video.pause();
     }
 
     clear(){

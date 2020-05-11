@@ -74,7 +74,6 @@ class Clip {
             before = [this.$bar.offsetLeft, this.$bar.offsetWidth];
         });
         this.$line.querySelector(".center").addEventListener("mousedown", e => {
-            console.log("center down");
             down = "center";
             downX = this.getLineX(e);
             before = [this.$bar.offsetLeft, this.$bar.offsetWidth];

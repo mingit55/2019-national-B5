@@ -6,12 +6,25 @@ class Track {
         this.clipList = [];
         this.pickList = [];
 
+        this.$video = document.createElement("video");
+        this.$video.src = url;
+        this.$video.onloadedmetadata = () => {
+            this.currentTime = 0;
+            this.duration = this.$video.duration;
+
+            let $duration = this.app.$timeArea.querySelector("#video-duration");
+            $duration.innerText = this.app.toTimeFormat(this.$video.duration);
+        };
+
         this.$lineBox = this.app.toHTMLFormat(`
             <div class="d-flex flex-column py-3">
                 <div class="line movie-line"></div>
+                <div id="cursor"></div>
             </div>
         `);
+        this.$cursor = this.$lineBox.querySelector("#cursor");
 
+        this.loadCursorEvent();
     }
 
     getSelection(e){
@@ -56,6 +69,7 @@ class Track {
 
     loadClipLine(){
         this.app.$clipArea.innerHTML = "";
+        this.$lineBox.querySelectorAll(".clip-line").forEach(elem => elem.remove());
         this.app.$clipArea.append(this.$lineBox);
     }
 
@@ -70,5 +84,27 @@ class Track {
     pushClip(clip){
         this.clipList.push(clip);
         this.$lineBox.prepend(clip.$line);
+    }
+
+    loadCursorEvent(){
+        let clicked = false;
+
+        this.$cursor.addEventListener("mousedown", e => clicked = e.which === 1);
+        window.addEventListener("mousemove", e => {
+            if(clicked){    
+                let {offsetWidth, offsetLeft} = this.app.$clipArea;
+                let X = e.pageX - offsetLeft;
+                X = X < 0 ? 0 : X > offsetWidth ? offsetWidth : X;
+                
+                this.$cursor.style.left = X + "px";
+                this.$video.currentTime = this.$video.duration * X / offsetWidth;
+            }
+        });
+        window.addEventListener("mouseup", e => clicked = false);
+    }
+
+    setCursorPosition(sec){
+        let {offsetWidth} = this.app.$clipArea;       
+        this.$cursor.style.left = offsetWidth * sec / this.duration  + "px";
     }
 }
