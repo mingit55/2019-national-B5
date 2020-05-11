@@ -8,6 +8,7 @@ class Viewer {
         this.$video = app.$videoArea.querySelector("video");
         this.$video.volume = 0.5;
 
+        this.$currentTime = app.$timeArea.querySelector("#video-current");
         this.$clipBox = app.$videoArea.querySelector(".clip-box");
 
         this.loadEvent();
@@ -58,11 +59,19 @@ class Viewer {
     }
 
     render(){
-        if(this.currentTrack && this.$video.duration){
+        const {currentTime, duration} = this.$video;
+        this.$currentTime.innerText = this.app.toTimeFormat(currentTime);
+
+        if(this.currentTrack && duration){
             this.currentTrack.clipList.forEach(clip => {
-                clip.redraw();
-                if(!document.querySelector("#" + clip.$canvas.id)){
-                    this.$clipBox.append(clip.$canvas);
+                if(clip.startTime <= currentTime && currentTime <= clip.startTime + clip.duration){
+                    clip.redraw();
+                    if(!document.querySelector("#" + clip.$canvas.id)){
+                        this.$clipBox.append(clip.$canvas);
+                    }
+                }
+                else {
+                    clip.$canvas.remove();
                 }
             });
         }
@@ -79,8 +88,10 @@ class Viewer {
         this.currentTrack = track;
         this.currentTrack.clipList = [];
         this.currentTrack.loadClipLine();
+        this.currentTrack.$lineBox.innerHTML = `<div class="line movie-line"></div>`;
         this.$video.src = this.currentTrack.url;
         this.$video.currentTime = 0;
+        this.$clipBox.innerHTML = "";
     }
 
     play(){

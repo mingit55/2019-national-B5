@@ -15,7 +15,10 @@ class Track {
     }
 
     getSelection(e){
-        let selected = null;
+        this.app.$timeArea.querySelector("#clip-start").innerText = this.app.toTimeFormat(0);
+        this.app.$timeArea.querySelector("#clip-duration").innerText = this.app.toTimeFormat(0);
+
+        let selected = null;        
         this.clipList.forEach(clip => {
             let left = clip.$canvas.offsetLeft;
             let top = clip.$canvas.offsetTop;

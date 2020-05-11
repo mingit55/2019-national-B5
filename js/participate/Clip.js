@@ -15,12 +15,19 @@ class Clip {
         this.ctx.lineWidth = this.app.lineWidth;
         this.ctx.font = `${this.app.fontSize}px "나눔 스퀘어", sans-serif`;
 
+        this.$startTime = this.app.$timeArea.querySelector("#clip-start");
+        this.$duration = this.app.$timeArea.querySelector("#clip-duration");
+
         this.$line = this.app.toHTMLFormat(`<div class="line clip-line">
-                                                <div class="left"></div>
-                                                <div class="center"></div>
-                                                <div class="right"></div>
+                                                <div class="bar">
+                                                    <div class="left"></div>
+                                                    <div class="center"></div>
+                                                    <div class="right"></div>
+                                                </div>
                                             </div>`);
-        this.$line.addEventListener("click", () => this.active = ! this.active)
+        this.$bar = this.$line.firstElementChild;
+        this.$line.addEventListener("click", () => this.active = true);
+        this.loadResizeEvent();
     }
 
     get active(){
@@ -30,8 +37,8 @@ class Clip {
     set active(value){
         if(value){
             this.$line.classList.add("active")
-            document.querySelector("#clip-start").innerText = this.app.toTimeFormat(this.startTime);
-            document.querySelector("#clip-duration").innerText = this.app.toTimeFormat(this.duration);
+            this.$startTime.innerText = this.app.toTimeFormat(this.startTime);
+            this.$duration.innerText = this.app.toTimeFormat(this.duration);
         } else {
             this.$line.classList.remove("active");
         }
@@ -45,5 +52,79 @@ class Clip {
         let Y = pageY - offsetTop < 0 ? 0 : pageY - offsetTop > this.app.$videoArea.offsetHeight ? this.app.$videoArea.offsetHeight :  pageY - offsetTop;
 
         return [X, Y];
+    }
+
+    getLineX(e){
+        let width = this.app.$clipArea.offsetWidth;
+        let left = this.app.$clipArea.offsetLeft
+
+        let X = e.pageX - left;
+        X = X < 0 ? 0 : X > width ? width : X;
+
+        return X;
+    }
+
+    loadResizeEvent(){
+        let down = false;
+        let downX = null;
+        let before = [];
+        this.$line.querySelector(".left").addEventListener("mousedown", e => {
+            down = "left";
+            downX = this.getLineX(e);
+            before = [this.$bar.offsetLeft, this.$bar.offsetWidth];
+        });
+        this.$line.querySelector(".center").addEventListener("mousedown", e => {
+            console.log("center down");
+            down = "center";
+            downX = this.getLineX(e);
+            before = [this.$bar.offsetLeft, this.$bar.offsetWidth];
+        });
+        this.$line.querySelector(".right").addEventListener("mousedown", e => {
+            down = "right";
+            downX = this.getLineX(e);
+            before = [this.$bar.offsetLeft, this.$bar.offsetWidth];
+        });
+
+        window.addEventListener("mousemove", e => {
+            if(down !== false && e.which === 1){
+                let minW = 30;
+                let layoutW = this.app.$clipArea.offsetWidth;
+
+                let X = this.getLineX(e);
+                let [beforeX, beforeW] = before;
+                let left = this.$bar.offsetLeft;
+                let width = this.$bar.offsetWidth;
+
+                if(down === "left") {
+                    left = X >= beforeX + beforeW - minW ? beforeX + beforeW - minW : X;
+                    width = beforeW + (beforeX - X);
+                }
+                else if(down === "center"){
+                    left = X + (beforeX - downX);
+                }
+                else if(down === "right"){
+                    width = X - beforeX;
+                }
+                
+
+                width = width < minW ? minW : width;
+                left = left < 0 ? 0 : left > layoutW - width ? layoutW - width : left;
+                
+                this.$bar.style.left = left + "px";
+                this.$bar.style.width = width + "px";
+
+                this.startTime = this.track.duration * left / layoutW;
+                this.duration = this.track.duration * width / layoutW;
+
+                this.$startTime.innerText = this.app.toTimeFormat(this.startTime);
+                this.$duration.innerText = this.app.toTimeFormat(this.duration);
+            }
+        });
+
+        window.addEventListener("mouseup", e => {
+            down = false;
+            downX = null;
+            before = [];
+        });
     }
 }
