@@ -129,4 +129,14 @@ class Clip {
             before = [];
         });
     }
+
+    toDataURL(){
+        let temp = this.active;
+        this.active = false;
+        this.redraw();
+        let url = this.$canvas.toDataURL("image/png");
+        this.active = temp;
+
+        return url;
+    }
 }

@@ -87,7 +87,100 @@ class App {
     }
 
     download(){
+        let $clipList = this.viewer.currentTrack.clipList.reduce((p, c) => p + `<img src="${c.toDataURL()}" alt="clip-item" data-start="${c.startTime}" data-duration="${c.duration}" />`, "");
+        let htmlFormat = `<style>
+                            #viewer {
+                                position: absolute;
+                                width: 100%;
+                                height: 100%;
+                                background-color: #000;
+                            }
 
+                            #viewer video,
+                            #viewer #clip-list,
+                            #viewer #clip-list img {
+                                position: absolute;
+                                left: 0;
+                                top: 0;
+                                width: 100%;
+                                height: 100%;
+                                pointer-events: none;
+                            }
+                            #viewer video { object-fit: cover; }
+
+                            #btn-control {
+                                 opacity: 0;
+                                 transition: 0.3s;
+                                 position: absolute;
+                                 left: 50%;
+                                 top: 50%;
+                                 transform: translate(-50%, -50%);
+                                 padding: 5px 10px;
+                                 border-radius: 10px;
+                                 border: none;
+                                 background-color: #fff;
+                                 color: #555;
+                                 font-size: 15px;
+                                 z-index: 10;
+                            }
+
+                            #viewer:hover #btn-control { opacity: 1; }
+                        </style>
+                        <div id="viewer">
+                            <video id="movie-video" src="${this.viewer.currentTrack.$video.src}"></video>
+                            <div id="clip-list">
+                                ${$clipList}
+                            </div>
+                            <button id="btn-control">재생</button>
+                        </div>
+                    
+                        <script>
+                            window.addEventListener("load", () => {
+                                let clipList = document.querySelectorAll("#clip-list > img");
+                                let video = document.querySelector("#movie-video");
+                    
+                                function render(){
+                                    clipList.forEach(clip => {
+                                        let startTime = parseInt(clip.dataset.start);
+                                        let duration = parseInt(clip.dataset.duration);
+                    
+                                        if(startTime <= video.currentTime && video.currentTime <= startTime + duration){
+                                            clip.style.visibility = "visible";
+                                        } else {
+                                            clip.style.visibility = "hidden";
+                                        }
+                                    });
+                    
+                                    requestAnimationFrame(render);
+                                }   
+                                
+                                render();
+
+                                let controlBtn = document.querySelector("#btn-control");
+                                controlBtn.addEventListener("click", e => {
+                                    if(controlBtn.innerText.trim() === "재생"){
+                                        video.play();
+                                        controlBtn.innerText = "정지";
+                                    } else {
+                                        video.pause();
+                                        controlBtn.innerText = "재생";
+                                    }
+                                });
+                            });
+                        </script>`;
+        let data = new Blob([htmlFormat], {type: "text/html"});
+        let url = URL.createObjectURL(data);
+
+        let now = new Date(),
+            y = `${now.getFullYear()}`.substr(-2),
+            m = now.getMonth() + 1 < 10 ? "0" + (now.getMonth() + 1) : now.getMonth() + 1,
+            d = now.getDate() < 10 ? "0" + now.getDate() : now.getDate();
+
+        let $a = document.createElement("a");
+        $a.href = url;
+        $a.download = `movie-${y + m + d}.html`;
+        $a.click();
+        $a.remove();
     }
 
     isMovieLoaded(){
