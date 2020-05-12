@@ -43,7 +43,7 @@ class App {
         // 영화 커버 이미지를 클릭했을 때
         this.$movieArea.querySelectorAll("img").forEach((img, idx) => {
             img.addEventListener("click", e => {
-                let url = `/videos/movie${idx + 1}.mp4`;
+                let url = `/2019-national-B5/videos/movie${idx + 1}.mp4`;
                 let track = this.viewer.hasTrack(url)
                 if(track) this.viewer.loadTrack(track);
                 else {
