@@ -18,7 +18,7 @@ class Clip {
         this.$startTime = this.app.$timeArea.querySelector("#clip-start");
         this.$duration = this.app.$timeArea.querySelector("#clip-duration");
 
-        this.$line = this.app.toHTMLFormat(`<div class="line clip-line">
+        this.$line = this.app.toHTMLFormat(`<div class="line clip-line" draggable="true">
                                                 <div class="bar">
                                                     <div class="left"></div>
                                                     <div class="center"></div>
@@ -31,6 +31,7 @@ class Clip {
             this.active = true;
         });
         this.loadResizeEvent();
+        this.loadDragEvent();
     }
 
     get active(){
@@ -128,6 +129,42 @@ class Clip {
             downX = null;
             before = [];
         });
+    }
+
+    loadDragEvent(){
+        this.track.dragTarget = null;
+        this.track.dropTarget = null;
+        this.$line.addEventListener("dragstart", e => {
+            // e.preventDefault();
+            this.track.dragTarget = this;
+        });
+
+        this.$line.addEventListener("dragover", e => e.preventDefault());
+
+        this.$line.addEventListener("drop", e => {
+            if(this.track.dragTarget !== null){
+                this.track.dropTarget = this;
+
+                let dropSibling = this.track.dropTarget.$line.nextElementSibling;
+
+                this.track.$lineBox.insertBefore(this.track.dropTarget.$line, this.track.dragTarget.$line);
+                if(this.track.dragTarget.$line == dropSibling) this.track.$lineBox.insertBefore(this.track.dragTarget.$line, this.track.dropTarget.$line);
+                else this.track.$lineBox.insertBefore(this.track.dragTarget.$line, dropSibling);
+
+                let dragIdx = this.track.clipList.findIndex(clip => clip == this.track.dragTarget);
+                let dropIdx = this.track.clipList.findIndex(clip => clip == this.track.dropTarget);
+                
+                console.log(dragIdx, dropIdx);
+
+                this.track.clipList[dragIdx] = this.track.dropTarget;
+                this.track.clipList[dropIdx] = this.track.dragTarget;
+
+                console.log(this.track.clipList);
+
+                this.track.dragTarget = this.track.dropTarget = null;
+            }
+        });
+        
     }
 
     toDataURL(){
