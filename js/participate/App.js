@@ -82,6 +82,9 @@ class App {
         document.querySelector("#btn-pickdel")
             .addEventListener("click", e => this.isMovieLoaded() && this.viewer.currentTrack.pickdel());
 
+        document.querySelector("#btn-reset")
+            .addEventListener("click", e => this.isMovieLoaded() && this.reset());
+
         document.querySelector("#btn-download")
             .addEventListener("click", e => this.isMovieLoaded() && this.download());
 
@@ -184,6 +187,14 @@ class App {
         $a.download = `movie-${y + m + d}.html`;
         $a.click();
         $a.remove();
+    }
+
+    reset(){
+        if(this.viewer.currentTrack) this.viewer.currentTrack.$video.remove();
+        this.viewer.currentTrack = null;
+        this.viewer.$clipBox.innerHTML = "";
+        this.$clipArea.innerHTML = "";
+        this.viewer.trackList = [];
     }
 
     merge(){
