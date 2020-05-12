@@ -2,6 +2,13 @@ class Group extends Clip {
     constructor(app, track, group){
         super(...arguments);
         this.group = [...group];
+
+        this.startTime = this.group.reduce((p, c) => Math.min(p, c.startTime), this.track.duration);
+        this.duration = this.group.reduce((p, c) => Math.max(p, c.startTime + c.duration), 0) - this.startTime;
+
+        let layoutW = this.app.$clipArea.offsetWidth;
+        this.$bar.style.left = layoutW * this.startTime / this.track.duration + "px";
+        this.$bar.style.width = layoutW * this.duration / this.track.duration + "px";
     }
 
     selectDown(x, y){
