@@ -3,9 +3,12 @@ class Clip {
         this.app = app;
         this.viewer = app.viewer;
         this.track = track;
-        this.group = [];
         this.startTime = 0;
         this.duration = this.track.duration;
+
+        this.x = 0;
+        this.y = 0;
+
         this.$canvas = document.createElement("canvas");
         this.$canvas.id = "canvas" + (new Date().getTime());
         this.$canvas.width = this.app.$videoArea.offsetWidth;
@@ -19,13 +22,15 @@ class Clip {
         this.$duration = this.app.$timeArea.querySelector("#clip-duration");
 
         this.$line = this.app.toHTMLFormat(`<div class="line clip-line" draggable="true">
+                                                <input type='checkbox'/>
                                                 <div class="bar">
                                                     <div class="left"></div>
                                                     <div class="center"></div>
                                                     <div class="right"></div>
                                                 </div>
                                             </div>`);
-        this.$bar = this.$line.firstElementChild;
+        this.$bar = this.$line.querySelector(".bar");
+        this.$checkbox = this.$line.querySelector("input");
         this.$line.addEventListener("click", () => {
             this.track.clipList.forEach(clip => clip.active = false);
             this.active = true;
@@ -46,6 +51,19 @@ class Clip {
         } else {
             this.$line.classList.remove("active");
         }
+    }
+
+    selectMove(x, y){
+        const [downX, downY] = this.temp;
+
+        let toX = ( x - downX);
+        let toY = ( y - downY);
+
+        this.x = toX;
+        this.y = toY;
+
+        this.$canvas.style.left = toX + "px";
+        this.$canvas.style.top = toY + "px";
     }
 
     getXY(e){
@@ -145,23 +163,14 @@ class Clip {
             if(this.track.dragTarget !== null){
                 this.track.dropTarget = this;
 
-                let dropSibling = this.track.dropTarget.$line.nextElementSibling;
-
-                this.track.$lineBox.insertBefore(this.track.dropTarget.$line, this.track.dragTarget.$line);
-                if(this.track.dragTarget.$line == dropSibling) this.track.$lineBox.insertBefore(this.track.dragTarget.$line, this.track.dropTarget.$line);
-                else this.track.$lineBox.insertBefore(this.track.dragTarget.$line, dropSibling);
-
                 let dragIdx = this.track.clipList.findIndex(clip => clip == this.track.dragTarget);
                 let dropIdx = this.track.clipList.findIndex(clip => clip == this.track.dropTarget);
-                
-                console.log(dragIdx, dropIdx);
 
                 this.track.clipList[dragIdx] = this.track.dropTarget;
                 this.track.clipList[dropIdx] = this.track.dragTarget;
 
-                console.log(this.track.clipList);
-
                 this.track.dragTarget = this.track.dropTarget = null;
+                this.viewer.update();
             }
         });
         

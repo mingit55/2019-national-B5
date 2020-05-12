@@ -17,11 +17,13 @@ class Track {
         };
 
         this.$lineBox = this.app.toHTMLFormat(`
-            <div class="d-flex flex-column py-3">
+            <div class="py-3">
+                <div class="list d-flex flex-column"></div>
                 <div class="line movie-line"></div>
                 <div id="cursor"></div>
             </div>
         `);
+        this.$lineList = this.$lineBox.firstElementChild;
         this.$cursor = this.$lineBox.querySelector("#cursor");
 
         this.loadCursorEvent();
@@ -31,8 +33,9 @@ class Track {
         this.app.$timeArea.querySelector("#clip-start").innerText = this.app.toTimeFormat(0);
         this.app.$timeArea.querySelector("#clip-duration").innerText = this.app.toTimeFormat(0);
 
-        let selected = null;        
-        this.clipList.forEach(clip => {
+        let selected = null;
+        for(let i = this.clipList.length - 1; i >= 0; i--){
+            let clip = this.clipList[i];
             let left = clip.$canvas.offsetLeft;
             let top = clip.$canvas.offsetTop;
 
@@ -48,7 +51,7 @@ class Track {
             else {
                 clip.active = false;
             }
-        });
+        }
 
         return selected;
     }
@@ -74,30 +77,18 @@ class Track {
     }
 
     alldel(){
-        this.clipList.forEach(clip => {
-            clip.$canvas.remove();
-            clip.$line.remove();
-        });
         this.clipList = [];
+        this.viewer.update();
     }
 
     pickdel(){
-        let nonActives = [];
-        this.clipList.forEach(clip => {
-            if(clip.active){
-                clip.$canvas.remove();
-                clip.$line.remove();
-            } else {
-                nonActives.push(clip);
-            }
-        });
-        
-        this.clipList = nonActives;
+        this.clipList = this.clipList.filter(clip => !clip.active);
+        this.viewer.update();
     }
 
     pushClip(clip){
         this.clipList.push(clip);
-        this.$lineBox.prepend(clip.$line);
+        this.viewer.update();
     }
 
     loadCursorEvent(){

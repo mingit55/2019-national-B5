@@ -84,6 +84,10 @@ class App {
 
         document.querySelector("#btn-download")
             .addEventListener("click", e => this.isMovieLoaded() && this.download());
+
+        // 병합
+        document.querySelector("#btn-merge")
+            .addEventListener("click", e => this.isMovieLoaded() && this.merge());
     }
 
     download(){
@@ -106,7 +110,6 @@ class App {
                                 height: 100%;
                                 pointer-events: none;
                             }
-                            #viewer video { object-fit: cover; }
 
                             #btn-control {
                                  opacity: 0;
@@ -181,6 +184,20 @@ class App {
         $a.download = `movie-${y + m + d}.html`;
         $a.click();
         $a.remove();
+    }
+
+    merge(){
+        let [checkList, nonCheckList] = this.viewer.currentTrack.clipList.reduce((p, c) => {
+            c.active = false;
+            c.$checkbox.checked ? p[0].push(c) : p[1].push(c)
+            return p;
+        }, [[], []]);
+        
+        
+        let clip = new Group(this, this.viewer.currentTrack, checkList);
+        this.viewer.currentTrack.clipList = [...nonCheckList, clip];
+
+        this.viewer.update();
     }
 
     isMovieLoaded(){

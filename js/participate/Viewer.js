@@ -52,9 +52,11 @@ class Viewer {
     render(){
         if(this.currentTrack){
             const {currentTime} = this.currentTrack.$video;
-            this.currentTrack.setCursorPosition(currentTime);
+            
             this.$currentTime.innerText = this.app.toTimeFormat(currentTime);
             this.$clipBox.innerHTML = "";
+
+            this.currentTrack.setCursorPosition(currentTime);
 
             this.currentTrack.clipList.forEach(clip => {
                 if(clip.startTime <= currentTime && currentTime <= clip.startTime + clip.duration){
@@ -70,6 +72,13 @@ class Viewer {
         }
 
         requestAnimationFrame(() => this.render());
+    }
+
+    update(){
+        this.currentTrack.$lineList.innerHTML = "";
+        this.currentTrack.clipList.forEach(clip => {
+            this.currentTrack.$lineList.prepend(clip.$line);
+        });
     }
 
 

@@ -13,16 +13,6 @@ class Rect extends Clip {
                 && this.data.y <= y && y <= this.data.y + this.data.h;
     }
 
-    selectMove(x, y){
-        const [downX, downY] = this.temp;
-
-        let toX = ( x - downX);
-        let toY = ( y - downY);
-
-        this.$canvas.style.left = toX + "px";
-        this.$canvas.style.top = toY + "px";
-    }
-
     mouseDown(e){
         let [X, Y] = this.getXY(e);
         this.data.x = X;

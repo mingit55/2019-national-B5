@@ -66,6 +66,15 @@
     cursor: pointer;
 }
 
+#clip-area .clip-line input[type='checkbox'] {
+    position: absolute;
+    left: -30px;
+    top: 50%;
+    width: 15px;
+    height: 15px;
+    transform: translateY(-50%);
+}
+
 #clip-area .clip-line.active .bar {
     background-color: #C92039;
 }

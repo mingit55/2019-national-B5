@@ -28,16 +28,6 @@ class Text extends Clip {
             && this.data.y - height <= y && y <= this.data.y;
     }
 
-    selectMove(x, y){
-        const [downX, downY] = this.temp;
-
-        let toX = ( x - downX);
-        let toY = ( y - downY);
-
-        this.$canvas.style.left = toX + "px";
-        this.$canvas.style.top = toY + "px";
-    }
-
     mouseDown(e){
         const [X, Y] = this.getXY(e);
         this.app.$videoArea.append(this.$input);
